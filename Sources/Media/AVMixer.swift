@@ -116,6 +116,10 @@ public class AVMixer {
         }
     }
     #endif
+    
+    //GCore
+    public var pauseImage: CGImage?
+    
     /// The recorder instance.
     public lazy var recorder = AVRecorder()
 

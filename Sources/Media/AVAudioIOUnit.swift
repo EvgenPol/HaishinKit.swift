@@ -129,6 +129,18 @@ extension AVAudioIOUnit: AVCaptureAudioDataOutputSampleBufferDelegate {
     // MARK: AVCaptureAudioDataOutputSampleBufferDelegate
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         appendSampleBuffer(sampleBuffer)
+        
+        //GCore
+        if let mixer = mixer, mixer.hasOnlyMicrophone {
+            let captureData = (captureOutput: output, captureConnection: connection)
+            
+            var timingInfo = CMSampleTimingInfo(duration: sampleBuffer.duration,
+                                                presentationTimeStamp: sampleBuffer.presentationTimeStamp,
+                                                decodeTimeStamp: sampleBuffer.decodeTimeStamp)
+            
+            mixer.pushPauseImageIntoVideoStream(captureOutputData: captureData, timingInfo: &timingInfo)
+        }
+        //
     }
 }
 
